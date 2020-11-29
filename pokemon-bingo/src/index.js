@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyDn0w9mkuA2a_MuNBEzeY4TcHPs1dDqeK8",
@@ -17,7 +18,6 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
 
 ReactDOM.render(
   <React.StrictMode>
