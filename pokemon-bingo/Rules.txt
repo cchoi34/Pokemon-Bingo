@@ -1,0 +1,32 @@
+Welcome to Pokemon Sword and Shield Bingo
+***
+** Setup **
+1. Get a friend, or play by yourself
+2. Make sure both oyu and every participating member has a copy of Pokemon Sword or Shield
+3. Go to the link for our site, and generate a random Bingo Board
+4. Once you are content with the bingo board, share bingo board and share it with the other participating members
+5. Should be ready! Additional fun things to set up would be a Discord, with screen sharing so that people can keep track of each other's bingo boards
+
+** Rules **
+1. First player to obtain a full row, column or diagonal wins (Bingo)
+2. Players can choose any way to obtain a bingo. Players can also get squares that are not part of his/her final bingo
+3. Completing a task in a Bingo square will allow that player to fill out that square (simply click it)
+4. Bingo Squares are not exclusive. Many players can complete the same task
+5. Tasks are randomized
+6. Players should all be playing from the same board
+7. Using external resources is allowed. (Google, asking a friend, etc.)
+8. Tasks are made to be fair to bother version of Pokemon Sword and Shield
+9. Not all tasks are of equal difficulty. 
+10. All tasks are possible within a single game, without interacting with another player via trading, Max raid battling, version exclusives, etc.
+
+**functionality to Add**
+[] - Create main navigation
+[] - Create Bingo Board 
+[] - Populate Bingo Board with Data 
+[] - Create id number for randomized bingo board
+[] - Create sharable link for bingo board
+[] - Store Data into Google Cloud Database
+[] - Add rules onto website
+[] - Add setup onto website
+[] - Deploy web app
+[] - Add possible shorter and longer versions of the bingo card (need to create specific tasks for this)

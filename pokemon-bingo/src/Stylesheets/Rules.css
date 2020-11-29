@@ -1,0 +1,13 @@
+.rules {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60vw;
+}
+
+.rules-container {
+    text-align: left;
+}
+
+.rules-list {
+    list-style-type: none;
+}

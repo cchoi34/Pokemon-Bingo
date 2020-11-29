@@ -1,0 +1,16 @@
+.bingo-board {
+    text-align: center;
+    background-color: peachpuff;
+    list-style-type: none;
+    width: 60vw;
+    height: auto;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flex {
+    display: flex;
+}
