@@ -1,15 +1,21 @@
 import '../Stylesheets/Home.css';
-import BingoBoard from './BingoBoard';
+import React from 'react';
 import Rules from './Rules';
+import Navbar from './Navbar';
 
-function Home() {
-  return (
-    <div className="home home-body">
-      <h1>Home</h1>
-      <BingoBoard />
-      <Rules />
-    </div>
-  );
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="home home-body">
+        <Navbar />
+        <Rules />
+      </div>
+    );
+  }
 }
 
 export default Home;

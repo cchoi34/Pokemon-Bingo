@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import firebase from 'firebase';
 
-
 var firebaseConfig = {
   apiKey: "AIzaSyDn0w9mkuA2a_MuNBEzeY4TcHPs1dDqeK8",
   authDomain: "pokemon-bingo-1f8dc.firebaseapp.com",
@@ -18,10 +17,12 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+export const db = firebase.firestore();
+db.settings({ timestampsInSnapshots: true });
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

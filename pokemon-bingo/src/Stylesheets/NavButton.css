@@ -1,0 +1,12 @@
+.nav-button {
+  border: 1px solid black;
+  border-radius: 20px;
+  color: #454545;
+  background-color: white;
+  font-size: 16px;
+  transition: all 0.15s ease-in;
+}
+
+.nav-button:hover {
+  background-color: rgb(189, 236, 230);
+}

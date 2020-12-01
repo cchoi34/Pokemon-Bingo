@@ -1,11 +1,12 @@
 .home {
     text-align: center;
-    background-color: aquamarine;
+    /* background-image: linear-gradient(45deg, #e3b60038, white); */
 }
 
 .home-body {
     width: 100vw;
-    height: 100vh;
+    height: auto;
+    padding-bottom: 10vh;
 }
   
   

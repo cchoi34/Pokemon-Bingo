@@ -1,12 +1,22 @@
 import './App.css';
 import Home from './Components/Home';
-import Navbar from './Components/Navbar';
+import React from 'react';
+import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
+import NotFound from './Components/NotFound';
+import Board from './Components/Board';
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <Home />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/rules' component={Home} />
+          <Route path='/board/:id' component={Board} />
+          <Route exact path='/board' component={Board} />
+          <Route component={NotFound} />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }

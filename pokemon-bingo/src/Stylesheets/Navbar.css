@@ -1,5 +1,23 @@
 .navbar {
-    text-align: center;
-    padding: 1vh 0;
-    background-color: grey;
+  padding: 1vh 0;
+  background-color: white;
+  margin-bottom: 1rem;
+  box-shadow: 2px 2px 20px 10px rgba(0, 0, 0, 0.753);
+}
+
+.navbar-list {
+  list-style-type: none;
+  display: flex;
+}
+
+.navbar-list-item {
+  width: 33vw;
+}
+
+.navbar-list-item a {
+  text-decoration: none;
+}
+
+.navbar-list-item:hover {
+  color: #c9c9c9;
 }

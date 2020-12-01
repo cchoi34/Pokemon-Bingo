@@ -20,13 +20,17 @@ Welcome to Pokemon Sword and Shield Bingo
 10. All tasks are possible within a single game, without interacting with another player via trading, Max raid battling, version exclusives, etc.
 
 **functionality to Add**
-[] - Create main navigation
-[] - Create Bingo Board 
-[] - Populate Bingo Board with Data 
+[x] - Create main navigation
+[x] - Create Bingo Board 
+[x] - Populate Bingo Board with Data 
+[] - allow user to select which row/column/diagonal they want to go for
+[] - Create real time viewing of other people you are competing with
 [] - Create id number for randomized bingo board
+  [] - save functionality
+  [] - share functionality
 [] - Create sharable link for bingo board
-[] - Store Data into Google Cloud Database
-[] - Add rules onto website
-[] - Add setup onto website
+[x] - Store Data into Google Cloud Database
+[x] - Add rules onto website
+[x] - Add setup onto website
 [] - Deploy web app
 [] - Add possible shorter and longer versions of the bingo card (need to create specific tasks for this)
