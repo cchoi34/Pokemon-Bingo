@@ -25,9 +25,10 @@ Welcome to Pokemon Sword and Shield Bingo
 [x] - Populate Bingo Board with Data 
 [] - allow user to select which row/column/diagonal they want to go for
 [] - Create real time viewing of other people you are competing with
-[] - Create id number for randomized bingo board
-  [] - save functionality
+[x] - Create id number for randomized bingo board
+  [x] - save functionality
   [] - share functionality
+[] - bugfix: saving a board that already exists in the database, prevent it
 [] - Create sharable link for bingo board
 [x] - Store Data into Google Cloud Database
 [x] - Add rules onto website

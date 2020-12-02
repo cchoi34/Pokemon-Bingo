@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import BingoTile from './BingoTile';
 import BoardButton from './BoardButton';
 import ShareLink from './ShareLink';
+import BingoBoardMarker from './BingoBoardMarker';
 
 class BingoBoard extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class BingoBoard extends React.Component {
       tasks: [],
       shareLink: false, 
       emptyBoardMessage: false,
+      markedTiles: [],
     }
     this.formatTilesForState = this.formatTilesForState.bind(this);
     this.getTasks = this.getTasks.bind(this);
@@ -31,6 +33,9 @@ class BingoBoard extends React.Component {
     this.saveCurrentBoard = this.saveCurrentBoard.bind(this);
     this.resetEmptyBoardMessage = this.resetEmptyBoardMessage.bind(this);
     this.shareBoardButtonClick = this.shareBoardButtonClick.bind(this);
+    this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.markMarkerTiles = this.markMarkerTiles.bind(this);
+    this.isMarked = this.isMarked.bind(this);
   }
   
   componentDidMount() {
@@ -44,7 +49,6 @@ class BingoBoard extends React.Component {
   getBoardById(id) {
     const database = firebase.database();
     const ref = database.ref(`/boards/${id}`);
-    console.log("ref: ", ref);
     ref.on('value', this.gotDataOnSingleBoard, this.errData)
   }
   
@@ -62,6 +66,7 @@ class BingoBoard extends React.Component {
         tasks: this.state.tasks,
         shareLink: this.state.shareLink,
         emptyBoardMessage: this.state.emptyBoardMessage,
+        markedTiles: this.state.markedTiles,
       });
     }
   }
@@ -73,6 +78,7 @@ class BingoBoard extends React.Component {
       tasks: result,
       shareLink: this.state.shareLink,
       emptyBoardMessage: this.state.emptyBoardMessage,
+      markedTiles: this.state.markedTiles,
     });
   }
   
@@ -107,6 +113,7 @@ class BingoBoard extends React.Component {
       tasks: this.state.tasks,
       shareLink: this.state.shareLink,
       emptyBoardMessage: this.state.emptyBoardMessage,
+      markedTiles: this.state.markedTiles,
     });
   }
 
@@ -144,6 +151,7 @@ class BingoBoard extends React.Component {
         tasks: this.state.tasks,
         shareLink: this.state.shareLink,
         emptyBoardMessage: true,
+        markedTiles: this.state.markedTiles,
       }, this.resetEmptyBoardMessage);
       return;
     }
@@ -159,6 +167,7 @@ class BingoBoard extends React.Component {
       tasks: this.state.tasks,
       shareLink: true,
       emptyBoardMessage: this.state.emptyBoardMessage,
+      markedTiles: this.state.markedTiles,
     });
   }
 
@@ -169,33 +178,183 @@ class BingoBoard extends React.Component {
         tasks: this.state.tasks,
         shareLink: this.state.shareLink,
         emptyBoardMessage: false,
+        markedTiles: this.state.markedTiles,
       })
     }, 2000)
+  }
+
+  markMarkerTiles(tileIndexes) {
+    if (tileIndexes) {
+      this.setState({
+        tiles: this.state.tiles,
+        tasks: this.state.tasks,
+        shareLink: this.state.shareLink,
+        emptyBoardMessage: this.state.emptyBoardMessage,
+        markedTiles: tileIndexes,
+      });
+    } 
+  }
+
+  onMarkerClick(id) {
+    let tileIndexes = null;
+    switch(id) {
+      case 'C1':
+        tileIndexes = [
+          [0, 0],
+          [0, 1],
+          [0, 2],
+          [0, 3],
+          [0, 4],
+        ];
+        break;
+      case 'C2':
+        tileIndexes = [
+          [1, 0],
+          [1, 1],
+          [1, 2],
+          [1, 3],
+          [1, 4],
+        ];
+        break;
+      case 'C3':
+        tileIndexes = [
+          [2, 0],
+          [2, 1],
+          [2, 2],
+          [2, 3],
+          [2, 4],
+        ];
+        break;
+      case 'C4':
+        tileIndexes = [
+          [3, 0],
+          [3, 1],
+          [3, 2],
+          [3, 3],
+          [3, 4],
+        ];
+        break;
+      case 'C5':
+        tileIndexes = [
+          [4, 0],
+          [4, 1],
+          [4, 2],
+          [4, 3],
+          [4, 4],
+        ];
+        break;
+
+      case 'R1':
+        tileIndexes = [
+          [0, 0],
+          [1, 0],
+          [2, 0],
+          [3, 0],
+          [4, 0],
+        ];
+        break;
+      case 'R2':
+        tileIndexes = [
+          [0, 1],
+          [1, 1],
+          [2, 1],
+          [3, 1],
+          [4, 1],
+        ];
+        break;
+      case 'R3':
+        tileIndexes = [
+          [0, 2],
+          [1, 2],
+          [2, 2],
+          [3, 2],
+          [4, 2],
+        ];
+        break;
+      case 'R4':
+        tileIndexes = [
+          [0, 3],
+          [1, 3],
+          [2, 3],
+          [3, 3],
+          [4, 3],
+        ];
+        break;
+      case 'R5':
+        tileIndexes = [
+          [0, 4],
+          [1, 4],
+          [2, 4],
+          [3, 4],
+          [4, 4],
+        ];
+        break;
+
+      case 'D1':
+        tileIndexes = [
+          [0, 0],
+          [1, 1],
+          [2, 2],
+          [3, 3],
+          [4, 4],
+        ];
+        break;
+      case 'D2':
+        tileIndexes = [
+          [0, 4],
+          [1, 3],
+          [2, 2],
+          [3, 1],
+          [4, 0],
+        ];
+        break;
+      
+      default:
+        break;
+    }
+    this.markMarkerTiles(tileIndexes);
+  }
+
+  isMarked(colIndex, rowIndex) {
+    const markedTiles = this.state.markedTiles;
+    let isMarked = false;
+    if (markedTiles.length === 0) {
+      return isMarked;
+    }
+    markedTiles.forEach((tile) => {
+      if (tile[0] === colIndex && tile[1] === rowIndex) {
+        isMarked = true;
+      }
+    });
+    return isMarked;
   }
 
   render() {
     const newBoard = 'New Board';
     const shareBoard = 'Share Board';
-    const testingUrl = "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input";
     return (
       <div>
-        <BoardButton name={newBoard} onClick={this.getTilesFromTasks} />
-        <BoardButton name={shareBoard} onClick={this.shareBoardButtonClick} />
-        {
-          this.state.shareLink && <ShareLink url={testingUrl} />
-        }
-        {
-          this.state.emptyBoardMessage && <ShareLink />
-        }
+        <div className="bingo-board-button-container">
+          <BoardButton name={newBoard} onClick={this.getTilesFromTasks} />
+          <BoardButton name={shareBoard} onClick={this.shareBoardButtonClick} />
+          {
+            this.state.shareLink && <ShareLink filledBoard={true} />
+          }
+          {
+            this.state.emptyBoardMessage && <ShareLink filledBoard={false} />
+          }
+        </div>
+        <BingoBoardMarker onMarkerClick={this.onMarkerClick} /> 
         <table className='bingo-board center'>
           <tbody>
             {
-              this.state.tiles.map((row, index) => {
+              this.state.tiles.map((row, rowIndex) => {
                 let newRow = 
-                  <tr key={index}>
+                  <tr key={rowIndex} id={rowIndex} >
                     {
-                      row.map((value, index) => {
-                        return <BingoTile value={value} key={index} />;
+                      row.map((value, colIndex) => {
+                        const marked = this.isMarked(colIndex, rowIndex);
+                        return <BingoTile value={value} key={colIndex} id={colIndex} marked={marked} />;
                       })
                     }
                   </tr>;

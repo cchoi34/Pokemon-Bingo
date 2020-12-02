@@ -6,9 +6,16 @@
     font-size: 20px;
     width: 10vw;
     height: 15vh;
+    position: relative;
     transition: all 0.15s ease-in;
 }
 
 .bingo-tile:hover {
   background-color: rgb(189, 236, 230);
+}
+
+.bingo-tile svg{
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
