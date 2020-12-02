@@ -1,3 +1,7 @@
+.bingo-board-container {
+  position: relative;
+}
+
 .bingo-board {
   text-align: center;
   background-color: transparent;

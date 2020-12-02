@@ -21,6 +21,7 @@ class BingoBoard extends React.Component {
       shareLink: false, 
       emptyBoardMessage: false,
       markedTiles: [],
+      selectedTiles: [],
     }
     this.formatTilesForState = this.formatTilesForState.bind(this);
     this.getTasks = this.getTasks.bind(this);
@@ -35,7 +36,9 @@ class BingoBoard extends React.Component {
     this.shareBoardButtonClick = this.shareBoardButtonClick.bind(this);
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.markMarkerTiles = this.markMarkerTiles.bind(this);
-    this.isMarked = this.isMarked.bind(this);
+    this.isTileMarked = this.isTileMarked.bind(this);
+    this.isTileSelected = this.isTileSelected.bind(this);
+    this.onTileClick = this.onTileClick.bind(this);
   }
   
   componentDidMount() {
@@ -67,6 +70,7 @@ class BingoBoard extends React.Component {
         shareLink: this.state.shareLink,
         emptyBoardMessage: this.state.emptyBoardMessage,
         markedTiles: this.state.markedTiles,
+        selectedTiles: this.state.selectedTiles,
       });
     }
   }
@@ -79,6 +83,7 @@ class BingoBoard extends React.Component {
       shareLink: this.state.shareLink,
       emptyBoardMessage: this.state.emptyBoardMessage,
       markedTiles: this.state.markedTiles,
+      selectedTiles: this.state.selectedTiles,
     });
   }
   
@@ -114,6 +119,7 @@ class BingoBoard extends React.Component {
       shareLink: this.state.shareLink,
       emptyBoardMessage: this.state.emptyBoardMessage,
       markedTiles: this.state.markedTiles,
+      selectedTiles: this.state.selectedTiles,
     });
   }
 
@@ -152,6 +158,7 @@ class BingoBoard extends React.Component {
         shareLink: this.state.shareLink,
         emptyBoardMessage: true,
         markedTiles: this.state.markedTiles,
+        selectedTiles: this.state.selectedTiles,
       }, this.resetEmptyBoardMessage);
       return;
     }
@@ -168,6 +175,7 @@ class BingoBoard extends React.Component {
       shareLink: true,
       emptyBoardMessage: this.state.emptyBoardMessage,
       markedTiles: this.state.markedTiles,
+      selectedTiles: this.state.selectedTiles,
     });
   }
 
@@ -179,6 +187,7 @@ class BingoBoard extends React.Component {
         shareLink: this.state.shareLink,
         emptyBoardMessage: false,
         markedTiles: this.state.markedTiles,
+        selectedTiles: this.state.selectedTiles,
       })
     }, 2000)
   }
@@ -191,6 +200,7 @@ class BingoBoard extends React.Component {
         shareLink: this.state.shareLink,
         emptyBoardMessage: this.state.emptyBoardMessage,
         markedTiles: tileIndexes,
+        selectedTiles: this.state.selectedTiles,
       });
     } 
   }
@@ -315,7 +325,7 @@ class BingoBoard extends React.Component {
     this.markMarkerTiles(tileIndexes);
   }
 
-  isMarked(colIndex, rowIndex) {
+  isTileMarked(colIndex, rowIndex) {
     const markedTiles = this.state.markedTiles;
     let isMarked = false;
     if (markedTiles.length === 0) {
@@ -329,11 +339,51 @@ class BingoBoard extends React.Component {
     return isMarked;
   }
 
+  isTileSelected(colIndex, rowIndex) {
+    const selectedTiles = this.state.selectedTiles;
+    let isSelected = false;
+    let foundIndex = null;
+    if (selectedTiles.length === 0) {
+      return [isSelected, foundIndex];
+    }
+    for (let i = 0; i < selectedTiles.length; i++) {
+      const tile = selectedTiles[i];
+      if (tile[0] === colIndex && tile[1] === rowIndex) {
+        isSelected = true;
+        foundIndex = i;
+        break;
+      }
+    }
+
+    return [isSelected, foundIndex];
+  }
+
+  onTileClick(colIndex, rowIndex) {
+    const selectedTiles = this.state.selectedTiles;
+    const selectedTile = [colIndex, rowIndex];
+    const isTileSelected = this.isTileSelected(colIndex, rowIndex);
+
+    if (isTileSelected[0]) {
+      selectedTiles.splice(isTileSelected[1], 1);
+    } else if (!isTileSelected[0]) {
+      selectedTiles.push(selectedTile);
+    }
+
+    this.setState({
+      tiles: this.state.tiles,
+      tasks: this.state.tasks,
+      shareLink: this.state.shareLink,
+      emptyBoardMessage: this.state.emptyBoardMessage,
+      markedTiles: this.state.markedTiles,
+      selectedTiles: selectedTiles,
+    });
+  }
+
   render() {
     const newBoard = 'New Board';
     const shareBoard = 'Share Board';
     return (
-      <div>
+      <div className="bingo-board-container">
         <div className="bingo-board-button-container">
           <BoardButton name={newBoard} onClick={this.getTilesFromTasks} />
           <BoardButton name={shareBoard} onClick={this.shareBoardButtonClick} />
@@ -353,8 +403,19 @@ class BingoBoard extends React.Component {
                   <tr key={rowIndex} id={rowIndex} >
                     {
                       row.map((value, colIndex) => {
-                        const marked = this.isMarked(colIndex, rowIndex);
-                        return <BingoTile value={value} key={colIndex} id={colIndex} marked={marked} />;
+                        const marked = this.isTileMarked(colIndex, rowIndex);
+                        const selected = this.isTileSelected(colIndex, rowIndex);
+                        return <BingoTile 
+                                  value={value} 
+                                  key={colIndex} 
+                                  id={colIndex} 
+                                  marked={marked}
+                                  selected={selected[0]}
+                                  onTileClick={() => {
+                                    console.log("clicked tile");
+                                    this.onTileClick(colIndex, rowIndex);
+                                  }}
+                                  />;
                       })
                     }
                   </tr>;
