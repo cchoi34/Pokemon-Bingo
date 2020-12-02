@@ -2,6 +2,7 @@ import '../Stylesheets/Home.css';
 import React from 'react';
 import BingoBoard from './BingoBoard';
 import Navbar from './Navbar';
+import CreateUser from './CreateUser';
 
 class Board extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Board extends React.Component {
       <div className="home home-body">
         <Navbar />
         <BingoBoard id={id} />
+        <CreateUser />
       </div>
     );
   }

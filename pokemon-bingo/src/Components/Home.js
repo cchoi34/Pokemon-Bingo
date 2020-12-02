@@ -1,6 +1,6 @@
 import '../Stylesheets/Home.css';
 import React from 'react';
-import Rules from './Rules';
+import CreateUser from './CreateUser';
 import Navbar from './Navbar';
 
 class Home extends React.Component {
@@ -12,7 +12,7 @@ class Home extends React.Component {
     return (
       <div className="home home-body">
         <Navbar />
-        <Rules />
+        <CreateUser />
       </div>
     );
   }

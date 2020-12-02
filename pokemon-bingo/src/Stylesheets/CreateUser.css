@@ -1,0 +1,33 @@
+.create-user-container {
+  margin-top: 5rem;
+  width: 25rem;
+  height: auto;
+  background-color: grey;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 1.5rem;
+}
+
+.create-user-container div {
+  margin-bottom: 2rem;
+}
+
+.create-user-container :first-child {
+  margin-top: 2rem;
+}
+
+.create-user-container div label {
+  margin-right: 1rem;
+}
+
+.create-user-container input {
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.create-user-container input:hover {
+  border: 1px solid rgba(0, 162, 255, 0.849);
+}

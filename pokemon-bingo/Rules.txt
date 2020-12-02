@@ -36,3 +36,8 @@ Welcome to Pokemon Sword and Shield Bingo
 [x] - Add setup onto website
 [] - Deploy web app
 [] - Add possible shorter and longer versions of the bingo card (need to create specific tasks for this)
+
+**Bug fixes
+[] - refreshing a new url with an id throws an error when clicking new Board
+[] - clicking share board doesn't let the user interact with the rest of the buttons
+[] - marker buttons aren't responsively aligned with the bingo board

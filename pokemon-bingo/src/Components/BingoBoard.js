@@ -44,9 +44,8 @@ class BingoBoard extends React.Component {
   componentDidMount() {
     if (this.props.id) {
       this.getBoardById(this.props.id);
-    } else if (!this.props.id) {
-      this.getTasks();
-    }
+    } 
+    this.getTasks();
   }
 
   getBoardById(id) {
@@ -61,6 +60,18 @@ class BingoBoard extends React.Component {
     ref.on('value', this.gotDataOnTasks, this.errData);
   }
 
+  gotDataOnTasks(data) {
+    const result = data.val();
+    this.setState({
+      tiles: this.state.tiles,
+      tasks: result,
+      shareLink: this.state.shareLink,
+      emptyBoardMessage: this.state.emptyBoardMessage,
+      markedTiles: this.state.markedTiles,
+      selectedTiles: this.state.selectedTiles,
+    });
+  }
+
   gotDataOnSingleBoard(data) {
     const result = data.val();
     if (result) {
@@ -73,18 +84,6 @@ class BingoBoard extends React.Component {
         selectedTiles: this.state.selectedTiles,
       });
     }
-  }
-  
-  gotDataOnTasks(data) {
-    const result = data.val();
-    this.setState({
-      tiles: this.state.tiles,
-      tasks: result,
-      shareLink: this.state.shareLink,
-      emptyBoardMessage: this.state.emptyBoardMessage,
-      markedTiles: this.state.markedTiles,
-      selectedTiles: this.state.selectedTiles,
-    });
   }
   
   errData(error) {
