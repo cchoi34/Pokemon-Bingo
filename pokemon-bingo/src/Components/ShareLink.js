@@ -2,6 +2,7 @@ import '../Stylesheets/ShareLink.css';
 import React from 'react';
 
 class ShareLink extends React.Component {
+  
   render() {
     const url = window.location.href;
     return (
@@ -10,7 +11,7 @@ class ShareLink extends React.Component {
           this.props.filledBoard ? 
           <div>
             <h3>Copy and share this link to your friends!</h3>
-            <input type="url" readOnly="true" value={url} />
+            <input type="url" readOnly={true} value={url} />
           </div>
           :
           <div>

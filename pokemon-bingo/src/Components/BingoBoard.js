@@ -22,6 +22,7 @@ class BingoBoard extends React.Component {
       emptyBoardMessage: false,
       markedTiles: [],
       selectedTiles: [],
+      userId: null,
     }
     this.formatTilesForState = this.formatTilesForState.bind(this);
     this.getTasks = this.getTasks.bind(this);
@@ -39,6 +40,8 @@ class BingoBoard extends React.Component {
     this.isTileMarked = this.isTileMarked.bind(this);
     this.isTileSelected = this.isTileSelected.bind(this);
     this.onTileClick = this.onTileClick.bind(this);
+    this.addPlayerToBoard = this.addPlayerToBoard.bind(this);
+    this.addPlayerTilesToBoard = this.addPlayerTilesToBoard.bind(this);
   }
   
   componentDidMount() {
@@ -46,6 +49,55 @@ class BingoBoard extends React.Component {
       this.getBoardById(this.props.id);
     } 
     this.getTasks();
+    const loggedInUser = localStorage.getItem('user');
+    if (loggedInUser) {
+      const userData = JSON.parse(loggedInUser);
+      this.setState({
+        user: userData.username,
+        userId: userData.id,
+      }, () => {
+        this.addPlayerToBoard(this.props.id);
+      })
+    }
+  }
+
+  addPlayerToBoard(boardId) {
+    if (boardId && this.state.userId) {
+      const database = firebase.database();
+      const ref = database.ref('boards').child(boardId).child(this.state.userId);
+      const playerCountRef = database.ref('boards').child(boardId);
+      playerCountRef.orderByChild('playerId').once('value', (snapshot) => {
+        let players = 0;
+        snapshot.forEach((child) => {
+          if (child.val().playerId) {
+            players = players + 1;
+          }
+        });
+        if (players < 4) {
+          ref.set({
+            'playerId': this.state.userId,
+            'selectedTiles': this.state.selectedTiles,
+          });
+        }
+      })
+    }
+  }
+
+  addPlayerTilesToBoard(boardId) {
+    if (boardId) {
+      const userId = this.state.userId;
+      if (userId) {
+        const selectedTiles = this.state.selectedTiles;
+        const playerData = {
+          'playerId': userId,
+          'selectedTiles': selectedTiles,
+        }
+
+        const database = firebase.database();
+        const ref = database.ref('boards').child(boardId).child(userId);
+        ref.set(playerData);
+      }
+    }
   }
 
   getBoardById(id) {
@@ -63,25 +115,16 @@ class BingoBoard extends React.Component {
   gotDataOnTasks(data) {
     const result = data.val();
     this.setState({
-      tiles: this.state.tiles,
       tasks: result,
-      shareLink: this.state.shareLink,
-      emptyBoardMessage: this.state.emptyBoardMessage,
-      markedTiles: this.state.markedTiles,
-      selectedTiles: this.state.selectedTiles,
     });
   }
 
   gotDataOnSingleBoard(data) {
     const result = data.val();
+    console.log("result: ", result);
     if (result) {
       this.setState({
-        tiles: result,
-        tasks: this.state.tasks,
-        shareLink: this.state.shareLink,
-        emptyBoardMessage: this.state.emptyBoardMessage,
-        markedTiles: this.state.markedTiles,
-        selectedTiles: this.state.selectedTiles,
+        tiles: result.board,
       });
     }
   }
@@ -114,11 +157,6 @@ class BingoBoard extends React.Component {
 
     this.setState({
       tiles: newTiles,
-      tasks: this.state.tasks,
-      shareLink: this.state.shareLink,
-      emptyBoardMessage: this.state.emptyBoardMessage,
-      markedTiles: this.state.markedTiles,
-      selectedTiles: this.state.selectedTiles,
     });
   }
 
@@ -142,7 +180,11 @@ class BingoBoard extends React.Component {
     if (!isCurrentBoardEmpty) {
       const database = firebase.database();
       const ref = database.ref('/boards');
-      const newRef = ref.push(currentBoard);
+      const boardWithPlayers = {
+        'board': currentBoard,
+        'players': null,
+      }
+      const newRef = ref.push(boardWithPlayers);
       return newRef.key;
     }
     return null;
@@ -162,6 +204,7 @@ class BingoBoard extends React.Component {
     }
 
     window.history.pushState(urlState, '', `/board/${id}`);
+    this.addPlayerToBoard(id);
 
     this.setState({
       shareLink: true,
@@ -350,6 +393,8 @@ class BingoBoard extends React.Component {
 
     this.setState({
       selectedTiles: selectedTiles,
+    }, () => {
+      this.addPlayerTilesToBoard(this.props.id);
     });
   }
 
@@ -386,10 +431,9 @@ class BingoBoard extends React.Component {
                                   marked={marked}
                                   selected={selected[0]}
                                   onTileClick={() => {
-                                    console.log("clicked tile");
                                     this.onTileClick(colIndex, rowIndex);
                                   }}
-                                  />;
+                                />;
                       })
                     }
                   </tr>;

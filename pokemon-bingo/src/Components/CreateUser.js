@@ -75,8 +75,8 @@ class CreateUser extends React.Component {
       const user = snapshot.val();
       let userData;
       if (user) {
-        const userData = Object.values(user);
-        userData = this.getUserData(data, userData[0]);
+        const userDataArray = Object.values(user);
+        userData = this.getUserData(data, userDataArray[0]);
       } else {
         userData = this.createUserData(data);
       }

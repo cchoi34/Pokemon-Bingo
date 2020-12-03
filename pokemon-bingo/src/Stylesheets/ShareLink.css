@@ -4,5 +4,9 @@
   font-size: 20px;
   width: 10vw;
   height: 15vh;
+  position: absolute;
+  right: 5rem;
+  top: 5rem;
+  z-index: 10;
 }
 
