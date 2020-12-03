@@ -152,12 +152,7 @@ class BingoBoard extends React.Component {
     const id = this.saveCurrentBoard();
     if (!id) {
       this.setState({
-        tiles: this.state.tiles,
-        tasks: this.state.tasks,
-        shareLink: this.state.shareLink,
         emptyBoardMessage: true,
-        markedTiles: this.state.markedTiles,
-        selectedTiles: this.state.selectedTiles,
       }, this.resetEmptyBoardMessage);
       return;
     }
@@ -169,24 +164,14 @@ class BingoBoard extends React.Component {
     window.history.pushState(urlState, '', `/board/${id}`);
 
     this.setState({
-      tiles: this.state.tiles,
-      tasks: this.state.tasks,
       shareLink: true,
-      emptyBoardMessage: this.state.emptyBoardMessage,
-      markedTiles: this.state.markedTiles,
-      selectedTiles: this.state.selectedTiles,
     });
   }
 
   resetEmptyBoardMessage() {
     window.setTimeout(() => {
       this.setState({
-        tiles: this.state.tiles,
-        tasks: this.state.tasks,
-        shareLink: this.state.shareLink,
         emptyBoardMessage: false,
-        markedTiles: this.state.markedTiles,
-        selectedTiles: this.state.selectedTiles,
       })
     }, 2000)
   }
@@ -194,12 +179,7 @@ class BingoBoard extends React.Component {
   markMarkerTiles(tileIndexes) {
     if (tileIndexes) {
       this.setState({
-        tiles: this.state.tiles,
-        tasks: this.state.tasks,
-        shareLink: this.state.shareLink,
-        emptyBoardMessage: this.state.emptyBoardMessage,
         markedTiles: tileIndexes,
-        selectedTiles: this.state.selectedTiles,
       });
     } 
   }
@@ -369,11 +349,6 @@ class BingoBoard extends React.Component {
     }
 
     this.setState({
-      tiles: this.state.tiles,
-      tasks: this.state.tasks,
-      shareLink: this.state.shareLink,
-      emptyBoardMessage: this.state.emptyBoardMessage,
-      markedTiles: this.state.markedTiles,
       selectedTiles: selectedTiles,
     });
   }

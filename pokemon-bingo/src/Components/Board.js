@@ -16,7 +16,6 @@ class Board extends React.Component {
       <div className="home home-body">
         <Navbar />
         <BingoBoard id={id} />
-        <CreateUser />
       </div>
     );
   }
