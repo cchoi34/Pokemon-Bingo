@@ -1,6 +1,16 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "1RPNE960UfeR4-axl8g6qVSK68UemxsNgFnnnhbjtfNI": {
+      ".read": "true",
+      ".write": "auth != null"
+    },
+    "boards": {
+      ".read": "true",
+      ".write": "true"
+    },
+    "users": {
+      ".read": "true",
+      ".write": "true"
+    }
   }
 }

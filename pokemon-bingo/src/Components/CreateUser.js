@@ -27,9 +27,11 @@ class CreateUser extends React.Component {
     const loggedInUser = localStorage.getItem('user');
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser);
-      this.setState({
-        userId: foundUser.id
-      });
+      if (foundUser.id) {
+        this.setState({
+          userId: foundUser.id
+        });
+      }
     }
   }
 
@@ -77,6 +79,7 @@ class CreateUser extends React.Component {
       if (user) {
         const userDataArray = Object.values(user);
         userData = this.getUserData(data, userDataArray[0]);
+        if (userData.id === '') return;
       } else {
         userData = this.createUserData(data);
       }
@@ -120,11 +123,14 @@ class CreateUser extends React.Component {
     } else if (user.username === data.username && user.password !== data.password) {
       this.setState({
         usernameTaken: true,
+        userId: '',
+        username: '',
+        password: '',
       })
       return {
-        'id': null,
-        'username': null,
-        'password': null,
+        'id': '',
+        'username': '',
+        'password': '',
       };
     }
   }

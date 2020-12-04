@@ -23,6 +23,7 @@ class BingoBoard extends React.Component {
       markedTiles: [],
       selectedTiles: [],
       userId: null,
+      boardData: {},
     }
     this.formatTilesForState = this.formatTilesForState.bind(this);
     this.getTasks = this.getTasks.bind(this);
@@ -42,6 +43,9 @@ class BingoBoard extends React.Component {
     this.onTileClick = this.onTileClick.bind(this);
     this.addPlayerToBoard = this.addPlayerToBoard.bind(this);
     this.addPlayerTilesToBoard = this.addPlayerTilesToBoard.bind(this);
+    this.selectedByPlayer = this.selectedByPlayer.bind(this);
+    this.getBoardData = this.getBoardData.bind(this);
+    this.getPlayersOnBoard = this.getPlayersOnBoard.bind(this);
   }
   
   componentDidMount() {
@@ -57,7 +61,8 @@ class BingoBoard extends React.Component {
         userId: userData.id,
       }, () => {
         this.addPlayerToBoard(this.props.id);
-      })
+      });
+      this.getBoardData(this.props.id);
     }
   }
 
@@ -100,6 +105,29 @@ class BingoBoard extends React.Component {
     }
   }
 
+  getPlayersOnBoard() {
+    if (!this.props.id) return [];
+    // const ref = firebase.database().ref('boards').child(this.props.id);
+    //using state. If this doesn't work use firebase data instead
+    const boardData = this.state.boardData;
+    if (!boardData) return [];
+    const players = Object.keys(boardData).filter((value) => {
+      return value.startsWith('ID_');
+    });
+    return players;
+  }
+
+  getBoardData(boardId) {
+    if (!boardId) return;
+    const ref = firebase.database().ref('boards').child(boardId);
+    // FINISH THOUGHT HERE
+    ref.on('value', (snapshot) => {
+      this.setState({
+        boardData: snapshot.val(),
+      })
+    })
+  }
+
   getBoardById(id) {
     const database = firebase.database();
     const ref = database.ref(`/boards/${id}`);
@@ -121,7 +149,6 @@ class BingoBoard extends React.Component {
 
   gotDataOnSingleBoard(data) {
     const result = data.val();
-    console.log("result: ", result);
     if (result) {
       this.setState({
         tiles: result.board,
@@ -324,20 +351,20 @@ class BingoBoard extends React.Component {
 
       case 'D1':
         tileIndexes = [
-          [0, 0],
-          [1, 1],
-          [2, 2],
-          [3, 3],
-          [4, 4],
-        ];
-        break;
-      case 'D2':
-        tileIndexes = [
           [0, 4],
           [1, 3],
           [2, 2],
           [3, 1],
           [4, 0],
+        ];
+        break;
+      case 'D2':
+        tileIndexes = [
+          [0, 0],
+          [1, 1],
+          [2, 2],
+          [3, 3],
+          [4, 4],
         ];
         break;
       
@@ -398,6 +425,26 @@ class BingoBoard extends React.Component {
     });
   }
 
+  selectedByPlayer(playerId, colIndex, rowIndex) {
+    const playerData = this.state.boardData[playerId];
+    if (!playerData) return false;
+
+    const tilesSelectedByPlayer = playerData.selectedTiles;
+    if (!tilesSelectedByPlayer) return false;
+
+    let isSelected = false;
+    if (tilesSelectedByPlayer.length === 0) return isSelected;
+
+    for (let i = 0; i < tilesSelectedByPlayer.length; i++) {
+      const tile = tilesSelectedByPlayer[i];
+      if (tile[0] === colIndex && tile[1] === rowIndex) {
+        isSelected = true;
+        break;
+      }
+    }
+    return isSelected;
+  }
+
   render() {
     const newBoard = 'New Board';
     const shareBoard = 'Share Board';
@@ -424,12 +471,23 @@ class BingoBoard extends React.Component {
                       row.map((value, colIndex) => {
                         const marked = this.isTileMarked(colIndex, rowIndex);
                         const selected = this.isTileSelected(colIndex, rowIndex);
+                        const playersOnBoard = this.getPlayersOnBoard();
+                        let playersSelected = [false, false, false, false];
+                        if (playersOnBoard.length > 0) {
+                          playersOnBoard.forEach((playerId, index) => {
+                            playersSelected[index] = this.selectedByPlayer(playerId, colIndex, rowIndex);
+                          });
+                        }
                         return <BingoTile 
                                   value={value} 
                                   key={colIndex} 
                                   id={colIndex} 
                                   marked={marked}
                                   selected={selected[0]}
+                                  selectedByPlayer1={playersSelected[0]}
+                                  selectedByPlayer2={playersSelected[1]}
+                                  selectedByPlayer3={playersSelected[2]}
+                                  selectedByPlayer4={playersSelected[3]}
                                   onTileClick={() => {
                                     this.onTileClick(colIndex, rowIndex);
                                   }}
